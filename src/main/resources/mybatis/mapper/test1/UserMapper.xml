@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neo.mapper.test1.User1Mapper" >
+    <resultMap id="BaseResultMap" type="com.neo.model.User" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
+        <result column="sex" property="userSex" javaType="String"/>
+        <result column="class" property="className" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id, userName, sex, class
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM users
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+	   FROM users
+	   WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.neo.model.User" >
+       INSERT INTO 
+       		users
+       		(id,userName,sex,class)
+       	VALUES
+       		(#{id},#{userName}, #{userSex},#{userClass})
+    </insert>
+    
+    <update id="update" parameterType="com.neo.model.User" >
+       UPDATE 
+       		users 
+       SET 
+       	<if test="userName != null">userName = #{userName},</if>
+        <if test="sex != null">userName = #{userSex},</if>
+        <if test="class != null">userName = #{userClass},</if>
+       WHERE 
+       		id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="java.lang.Long" >
+       DELETE FROM
+       		 users 
+       WHERE 
+       		 id =#{id}
+    </delete>
+
+</mapper>
